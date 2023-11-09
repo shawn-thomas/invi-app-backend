@@ -8,4 +8,9 @@ function getDatabaseUri() {
     : process.env.DATABASE_URL || "postgresql:///InviApp";
 }
 
-module.exports = { getDatabaseUri }; 
+const BCRYPT_WORK_FACTOR = process.env.NODE_ENV === "test" ? 1 : 12;
+
+module.exports = {
+  BCRYPT_WORK_FACTOR,
+  getDatabaseUri
+};
