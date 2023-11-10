@@ -1,26 +1,34 @@
 "use strict";
 
+/** Express app for Invi. */
+
 const express = require("express");
-const app = express();
 const cors = require("cors");
-const db = require("./db");
+const app = express();
+
 const { NotFoundError } = require("./expressError");
 
-// Middleware
+const { authenticateJWT } = require("./middleware/auth");
+const authRoutes = require("./routes/auth");
+
+
 app.use(cors()); // Enable CORS for all routes
+app.use(express.json());
 app.use(express.json()); // Parse JSON request bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
+app.use(authenticateJWT);
+
+app.use("/auth", authRoutes);
 
 // Test Route
-app.get('/test', async (req, res) => {
-  try {
-    const result = await db.query('SELECT NOW()');
-    res.json(result.rows);
-  } catch (error) {
-    console.error("Database error:", error); // Log the error for debugging
-    res.status(500).json({ error: "Internal server error" }); // Send a generic error message
-  }
-});
+// app.get('/test', async (req, res) => {
+//   try {
+//     const result = await db.query('SELECT NOW()');
+//     res.json(result.rows);
+//   } catch (error) {
+//     console.error("Database error:", error); // Log the error for debugging
+//     res.status(500).json({ error: "Internal server error" }); // Send a generic error message
+//   }
+// });
 
 // Handle 404 errors
 app.use(function (req, res, next) {
