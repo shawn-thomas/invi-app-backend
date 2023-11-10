@@ -65,7 +65,7 @@ class User {
       [username]
     );
 
-    if (duplicateCheckCheck.rows.length > 0) {
+    if (duplicateCheck.rows.length > 0) {
       throw new BadRequestError(`Duplicate username: ${username}`);
     }
 
