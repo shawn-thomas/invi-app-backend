@@ -13,7 +13,6 @@ const authRoutes = require("./routes/auth");
 
 
 app.use(cors()); // Enable CORS for all routes
-app.use(express.json());
 app.use(express.json()); // Parse JSON request bodies
 app.use(authenticateJWT);
 
