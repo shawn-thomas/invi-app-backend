@@ -1,8 +1,7 @@
 /** Invi Tables */
 
 CREATE TABLE users (
-  user_id SERIAL PRIMARY KEY,
-  username VARCHAR(25) UNIQUE NOT NULL,
+  username VARCHAR(25) PRIMARY KEY,
   password TEXT NOT NULL,
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
