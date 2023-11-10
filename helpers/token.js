@@ -12,7 +12,7 @@ function createToken(user) {
   let payload = {
     username: user.username,
   };
-  console.log("secret key ---------->", SECRET_KEY);
+
   return jwt.sign(payload, SECRET_KEY);
 }
 
