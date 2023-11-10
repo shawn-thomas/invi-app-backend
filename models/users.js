@@ -21,14 +21,14 @@ class User {
    * Throws UnauthorizedError if user is not found or wrong password.
   */
 
-  static async authenicate(username, password) {
+  static async authenticate(username, password) {
 
     const result = await db.query(`
       SELECT username,
             password,
             first_name AS "firstName",
             last_name AS "lastName",
-            email,
+            email
         FROM users
         WHERE username = $1`,
       [username]
@@ -62,7 +62,7 @@ class User {
       SELECT username
         FROM users
         WHERE username = $1`,
-      [username]
+      [username],
     );
 
     if (duplicateCheck.rows.length > 0) {
@@ -83,13 +83,13 @@ class User {
             username,
             first_name as "firstName",
             last_name AS "lastName",
-            email,`, [
+            email`, [
       username,
       hashedPassword,
       firstName,
       lastName,
       email
-    ],
+      ],
     );
 
     const user = result.rows[0];
