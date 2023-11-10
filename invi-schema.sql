@@ -10,7 +10,7 @@ CREATE TABLE users (
 
 CREATE TABLE customers (
   customer_id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(user_id),
+  username VARCHAR(25) REFERENCES users(username),
   customer_name VARCHAR(100) UNIQUE NOT NULL,
   first_name VARCHAR(50),
   last_name VARCHAR(50),
@@ -21,7 +21,7 @@ CREATE TABLE customers (
 
 CREATE TABLE invoices (
   invoice_id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(user_id),
+  username VARCHAR(25) REFERENCES users(username),
   customer_id INT REFERENCES customers(customer_id),
   invoice_date DATE,
   total_amount DECIMAL(15, 2),
@@ -29,9 +29,9 @@ CREATE TABLE invoices (
 );
 
 CREATE TABLE inventory (
-  product_id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(user_id),
-  product_name VARCHAR(100) NOT NULL,
+  sku VARCHAR(25) PRIMARY KEY,
+  username VARCHAR(25) REFERENCES users(username),
+  product_name VARCHAR(50) NOT NULL,
   description TEXT,
   price DECIMAL(15, 2),
   quantity_available INT
@@ -40,7 +40,7 @@ CREATE TABLE inventory (
 CREATE TABLE invoice_items (
   invoice_item_id SERIAL PRIMARY KEY,
   invoice_id INT REFERENCES invoices(invoice_id),
-  product_id INT REFERENCES inventory(product_id),
+  sku VARCHAR(25) REFERENCES inventory(sku),
   quantity INT,
   unit_price DECIMAL(15, 2)
 );
