@@ -1,7 +1,7 @@
 "use strict";
 
 const app = require("./app");
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 app.get('/', (req, res) => {
   res.send('Welcome to the InviApp API');
