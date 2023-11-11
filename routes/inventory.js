@@ -41,5 +41,18 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
   return res.status(201).json({ product });
 });
 
+/** GET /[sku]  =>  { product }
+ *
+ *  Product is { sku, productName, description, price, quantityAvailable}
+ *
+ * Authorization required: ensureLoggedIn
+ */
+
+router.get("/:sku", ensureLoggedIn, async function (req, res, next) {
+  const username = res.locals.username;6
+  const product = await Product.get(req.params.sku, username);
+  return res.json({ product });
+});
+
 
 module.exports = router;

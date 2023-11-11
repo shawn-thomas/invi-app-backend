@@ -3,7 +3,6 @@
 const db = require("../db");
 const { NotFoundError, BadRequestError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
-const { getCurrentLoggedInUsername } = require("../helpers/user");
 
 /** Related functions for Inventory. */
 
@@ -105,18 +104,35 @@ class Product {
    * Throws NotFoundError if sku not found.
    **/
 
-    static async remove(sku) {
-      const result = await db.query(`
-          DELETE
-          FROM inventory
-          WHERE sku = $1
-          RETURNING sku`, [sku]);
-      const product = result.rows[0];
+  static async remove(sku) {
+    const result = await db.query(`
+        DELETE
+        FROM inventory
+        WHERE sku = $1
+        RETURNING sku`, [sku]);
+    const product = result.rows[0];
 
-      if (!product) throw new NotFoundError(`No SKU: ${sku}`);
-    }
-
+    if (!product) throw new NotFoundError(`No SKU: ${sku}`);
   }
+
+  static async get(sku, username) {
+    const productRes = await db.query(`
+          SELECT  sku,
+                  product_name as "productName",
+                  description,
+                  price,
+                  quantity_available AS "quantityAvailable"
+          FROM inventory
+          WHERE sku = $1 and username = $2`, [sku, username]);
+
+    const product = productRes.rows[0];
+
+    if (!product) throw new NotFoundError(`No SKU: ${sku}`);
+
+    return product;
+  }
+
+}
 
 
 module.exports = Product;
