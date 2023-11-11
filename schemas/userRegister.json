@@ -1,6 +1,6 @@
 {
-    "$schema": "http://json-schema.org/draft-01/schema#",
-    "$id": "http://example.com/example.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/userRegister.json",
     "type": "object",
     "properties": {
       "username": {
