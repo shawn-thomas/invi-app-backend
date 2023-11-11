@@ -3,6 +3,7 @@
 const db = require("../db");
 const { NotFoundError, BadRequestError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
+const { getCurrentLoggedInUsername } = require("../helpers/user");
 
 /** Related functions for Inventory. */
 
@@ -10,7 +11,7 @@ class Product {
   /** Create a product (from data), update db, return new product data.
    *
    * data should be:
-   * { sku, productName, description (opt), price(opt), quantityAvailable(opt) }
+   * { sku, username, productName, description (opt), price(opt), quantityAvailable(opt) }
    *
    * Throws NotFoundError if the sku does not exist.
    *
@@ -18,11 +19,13 @@ class Product {
    * { sku, productName, description, price, quantityAvailable }
    **/
 
-  static async create({ sku, productName, description, price, quantityAvailable }) {
+  static async create({ sku, username, productName, description, price, quantityAvailable }) {
     const skuDupeCheck = await db.query(`
         SELECT sku
         FROM inventory
         WHERE sku = $1`, [sku]);
+
+    // const username = getCurrentLoggedInUsername(req);
 
     if (skuDupeCheck.rows[0]) {
       throw new BadRequestError(`Duplicate SKU: ${sku}`);
@@ -30,11 +33,12 @@ class Product {
 
     const result = await db.query(`
         INSERT INTO inventory (sku,
+                              username,
                               product_name,
                               description,
                               price,
                               quantity_available)
-        VALUES ($1, $2, $3, $4, $5)
+        VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING
             sku,
             product_name as "productName",
@@ -42,6 +46,7 @@ class Product {
             price,
             quantity_available as "quantityAvailable"`, [
       sku,
+      username,
       productName,
       description,
       price,
