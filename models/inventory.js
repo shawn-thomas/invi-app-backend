@@ -12,7 +12,7 @@ class Product {
    * data should be:
    * { sku, productName, description (opt), price(opt), quantityAvailable(opt) }
    *
-   * Throws NotFoundError if the company does not exist.
+   * Throws NotFoundError if the sku does not exist.
    *
    * Returns:
    * { sku, productName, description, price, quantityAvailable }
@@ -22,7 +22,7 @@ class Product {
     const skuDupeCheck = await db.query(`
         SELECT sku
         FROM inventory
-        WHERE inventory = $1`, [sku]);
+        WHERE sku = $1`, [sku]);
 
     if (skuDupeCheck.rows[0]) {
       throw new BadRequestError(`Duplicate SKU: ${sku}`);
@@ -97,7 +97,7 @@ class Product {
 
   /** Delete given product from inventory; returns undefined.
    *
-   * Throws NotFoundError if company not found.
+   * Throws NotFoundError if sku not found.
    **/
 
     static async remove(sku) {
@@ -106,9 +106,9 @@ class Product {
           FROM inventory
           WHERE sku = $1
           RETURNING sku`, [sku]);
-      const company = result.rows[0];
+      const product = result.rows[0];
 
-      if (!company) throw new NotFoundError(`No SKU: ${sku}`);
+      if (!product) throw new NotFoundError(`No SKU: ${sku}`);
     }
 
   }
