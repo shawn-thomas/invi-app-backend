@@ -39,6 +39,8 @@ function ensureLoggedIn(req, res, next) {
   throw new UnauthorizedError();
 }
 
+
+
 module.exports = {
   authenticateJWT,
   ensureLoggedIn,
