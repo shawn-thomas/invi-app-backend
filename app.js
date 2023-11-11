@@ -10,6 +10,7 @@ const { NotFoundError } = require("./expressError");
 
 const { authenticateJWT } = require("./middleware/auth");
 const authRoutes = require("./routes/auth");
+const inventoryRoutes = require("./routes/inventory");
 
 
 app.use(cors()); // Enable CORS for all routes
@@ -17,6 +18,7 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(authenticateJWT);
 
 app.use("/auth", authRoutes);
+app.use("/inventory", inventoryRoutes);
 
 // Test Route
 // app.get('/test', async (req, res) => {
