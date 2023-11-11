@@ -35,10 +35,12 @@ function authenticateJWT(req, res, next) {
  */
 
 function ensureLoggedIn(req, res, next) {
-  if (res.locals.user?.username) return next();
+  if (res.locals.user?.username) {
+    res.locals.username = res.locals.user.username;
+    return next();
+  }
   throw new UnauthorizedError();
 }
-
 
 
 module.exports = {
