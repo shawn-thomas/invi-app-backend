@@ -24,17 +24,21 @@ CREATE TABLE invoices (
   username VARCHAR(25) REFERENCES users(username),
   customer_id INT REFERENCES customers(customer_id),
   invoice_date DATE,
+  date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   total_amount DECIMAL(15, 2),
   status VARCHAR(20)
 );
 
+
 CREATE TABLE inventory (
-  sku VARCHAR(25) PRIMARY KEY,
+  inventory_id SERIAL PRIMARY KEY,
+  sku VARCHAR(25) NOT NULL,
   username VARCHAR(25) REFERENCES users(username),
   product_name VARCHAR(50) NOT NULL,
   description TEXT,
   price DECIMAL(15, 2),
-  quantity_available INT
+  quantity_available INT,
+  UNIQUE (sku)
 );
 
 CREATE TABLE invoice_items (
@@ -42,5 +46,5 @@ CREATE TABLE invoice_items (
   invoice_id INT REFERENCES invoices(invoice_id),
   sku VARCHAR(25) REFERENCES inventory(sku),
   quantity INT,
-  unit_price DECIMAL(15, 2)
+  unit_price DECIMAL(15, 2) CHECK (unit_price >= 0)
 );
