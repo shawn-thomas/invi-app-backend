@@ -132,6 +132,15 @@ class Product {
     return product;
   }
 
+  /** Find all products (optional filter on searchFilters).
+ *
+ * searchFilters (all optional):
+ * - maxPrice
+ * - nameLike (will find case-insensitive, partial matches)
+ *
+ * Returns [{ sku, productName, description, price, quantityAvailable }, ...]
+ */
+
   static async findAll(searchFilters = {}, username) {
     const { maxPrice, nameLike } = searchFilters;
     let vals = []; // Initialize vals here
@@ -148,13 +157,11 @@ class Product {
         whereParts.push(`product_name ILIKE $${vals.length}`);
     }
 
-    // Add the condition to filter by the current logged-in user
     vals.push(username);
     whereParts.push(`username = $${vals.length}`);
 
     const where = (whereParts.length > 0) ? "WHERE " + whereParts.join(" AND ") : "";
 
-    console.log(where, vals);
     const productsRes = await db.query(`
         SELECT sku,
                product_name AS "productName",
@@ -165,7 +172,7 @@ class Product {
         ORDER BY product_name`, vals);
 
     return productsRes.rows;
-}
+  }
 
 
 
