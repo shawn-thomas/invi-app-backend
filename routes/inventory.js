@@ -10,6 +10,7 @@ const Product = require("../models/inventory");
 const { ensureLoggedIn } = require("../middleware/auth");
 
 const productNewSchema = require("../schemas/productNew.json")
+const productSearchSchema = require("../schemas/productSearch.json")
 
 const router = new express.Router();
 
@@ -41,7 +42,42 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
   return res.status(201).json({ product });
 });
 
-/** GET /[sku]  =>  { product }
+/** GET /  =>
+ *  { inventory:
+ *  [{ sku, username, productName, description, price, quantityAvailable,...]}
+ *
+ * Can filter on provided search filters:
+ * - nameLike
+ * - maxPrice
+ *
+ * Authorization required: ensureLoggedIn
+ */
+
+router.get("/", ensureLoggedIn, async function (req, res, next) {
+  try {
+    const q = req.query;
+    if (q.maxPrice !== undefined) q.maxPrice = +q.maxPrice;
+
+    const validator = jsonschema.validate(
+      q,
+      productSearchSchema,
+      { required: true }
+    );
+    if (!validator.valid) {
+      const errs = validator.errors.map(e => e.stack);
+      throw new BadRequestError(errs);
+    }
+
+    const products = await Product.findAll(q);
+
+    return res.json({ products });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+
+/** GET /[sku] => { product }
  *
  *  Product is { sku, productName, description, price, quantityAvailable}
  *

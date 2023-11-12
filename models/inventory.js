@@ -132,7 +132,68 @@ class Product {
     return product;
   }
 
+  /** Create WHERE clause for filters, to be used by functions that query
+   * with filters.
+   *
+   * searchFilters (all optional):
+   * - maxPrice
+   * - nameLike (will find case-insensitive, partial matches)
+   *
+   * Returns {
+   *  where: "WHERE maxPrice <= $1 AND name ILIKE $2",
+   *  vals: [100, '%Apple%']
+  **/
+
+  static async _filterWhereBuilder({ maxPrice, nameLike }) {
+    let whereParts = [];
+    let vals = [];
+
+    if (maxPrice !== undefined) {
+      vals.push(maxPrice);
+      whereParts.push(`price <= $${vals.length}`);
+    }
+
+    if (nameLike) {
+      vals.push(`%${nameLike}%`);
+      whereParts.push(`product_name ILIKE $${vals.length}`);
+    }
+
+    const where = (whereParts.length > 0) ? "WHERE " + whereParts.join(" AND ") : "";
+
+    return { where, vals };
+  }
+
+  /**
+ * Find all products (optional filter on searchFilters).
+ *
+ * searchFilters (all optional):
+ * - maxPrice
+ * - nameLike (will find case-insensitive, partial matches)
+ *
+ * Returns [{ sku, productName, description, price, quantityAvailable }, ...]
+ */
+  static async findAll(searchFilters = {}, username) {
+    const { maxPrice, nameLike } = searchFilters;
+
+    const { where, vals } = this._filterWhereBuilder({
+      maxPrice,
+      nameLike,
+    });
+
+    const productsRes = await db.query(`
+        SELECT sku,
+               product_name AS "productName",
+               description,
+               price,
+               quantity_available AS "quantityAvailable"
+        FROM inventory ${where}
+        ORDER BY product_name`, vals);
+
+    return productsRes.rows;
+  }
+
 }
+
 
 
 module.exports = Product;
