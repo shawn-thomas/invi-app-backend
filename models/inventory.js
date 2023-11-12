@@ -22,7 +22,7 @@ class Product {
     const skuDupeCheck = await db.query(`
         SELECT sku
         FROM inventory
-        WHERE sku = $1`, [sku]);
+        WHERE sku = $1 and username = $2`, [sku, username]);
 
     // const username = getCurrentLoggedInUsername(req);
 
