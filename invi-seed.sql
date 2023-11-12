@@ -1,31 +1,29 @@
--- Customers Table Seed Data
+INSERT INTO users (username, password, first_name, last_name, email)
+VALUES
+  ('user1', 'password1', 'John', 'Doe', 'john.doe@example.com'),
+  ('user2', 'password2', 'Jane', 'Smith', 'jane.smith@example.com'),
+  ('user3', 'password3', 'Bob', 'Johnson', 'bob.johnson@example.com');
 
--- Users
-INSERT INTO users (username, password, first_name, last_name, email) VALUES
-('john_doe', 'password123', 'John', 'Doe', 'john.doe@example.com'),
-('alice_smith', 'pass456', 'Alice', 'Smith', 'alice.smith@example.com'),
-('bob_jones', 'secure789', 'Bob', 'Jones', 'bob.jones@example.com');
+INSERT INTO inventory (sku, username, product_name, description, price, quantity_available)
+VALUES
+  ('SKU001', 'user1', 'Product1', 'Description for Product1', 50.00, 100),
+  ('SKU002', 'user2', 'Product2', 'Description for Product2', 75.50, 75),
+  ('SKU003', 'user3', 'Product3', 'Description for Product3', 30.25, 50);
 
--- Customers
-INSERT INTO customers (username, customer_name, first_name, last_name, email, phone, address) VALUES
-('john_doe', 'ABC Corp', 'John', 'Doe', 'abc.corp@example.com', '123-456-7890', '123 Main St'),
-('alice_smith', 'XYZ Ltd', 'Alice', 'Smith', 'xyz.ltd@example.com', '987-654-3210', '456 Oak Ave'),
-('bob_jones', '123 Enterprises', 'Bob', 'Jones', '123.enterprises@example.com', '555-123-4567', '789 Pine Blvd');
+INSERT INTO customers (username, customer_name, first_name, last_name, email, phone, address)
+VALUES
+  ('user1', 'Customer1', 'John', 'Doe', 'john.doe.customer@example.com', '123-456-7890', '123 Main St, City'),
+  ('user2', 'Customer2', 'Jane', 'Smith', 'jane.smith.customer@example.com', '987-654-3210', '456 Oak St, Town'),
+  ('user3', 'Customer3', 'Bob', 'Johnson', 'bob.johnson.customer@example.com', '555-123-4567', '789 Pine St, Village');
 
--- Invoices
-INSERT INTO invoices (username, customer_id, invoice_date, total_amount, status) VALUES
-('john_doe', 1, '2023-01-15', 500.00, 'Paid'),
-('alice_smith', 2, '2023-02-20', 800.00, 'Pending'),
-('bob_jones', 3, '2023-03-10', 1200.00, 'Processing');
+INSERT INTO invoices (username, customer_id, invoice_date, total_amount, status)
+VALUES
+  ('user1', 1, '2023-01-01', 100.00, 'Paid'),
+  ('user2', 2, '2023-02-01', 150.50, 'Pending'),
+  ('user3', 3, '2023-03-01', 200.25, 'Processing');
 
--- Inventory
-INSERT INTO inventory (sku, username, product_name, description, price, quantity_available) VALUES
-('SKU001', 'john_doe', 'Widget A', 'High-quality widget', 19.99, 100),
-('SKU002', 'alice_smith', 'Gadget B', 'Feature-rich gadget', 29.99, 50),
-('SKU003', 'bob_jones', 'Tool C', 'Durable tool for various tasks', 49.99, 75);
-
--- Invoice Items
-INSERT INTO invoice_items (invoice_id, sku, quantity, unit_price) VALUES
-(1, 'SKU001', 2, 19.99),
-(2, 'SKU002', 1, 29.99),
-(3, 'SKU003', 3, 49.99);
+INSERT INTO invoice_items (invoice_id, sku, quantity, unit_price)
+VALUES
+  (1, 'SKU001', 2, 25.00),
+  (2, 'SKU002', 1, 75.50),
+  (3, 'SKU003', 3, 10.08);
