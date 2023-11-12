@@ -55,6 +55,7 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 
 router.get("/", ensureLoggedIn, async function (req, res, next) {
   try {
+    const username = res.locals.username;
     const q = req.query;
     if (q.maxPrice !== undefined) q.maxPrice = +q.maxPrice;
 
@@ -68,7 +69,7 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
       throw new BadRequestError(errs);
     }
 
-    const products = await Product.findAll(q);
+    const products = await Product.findAll(q, username);
 
     return res.json({ products });
   } catch (err) {
