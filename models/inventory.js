@@ -104,7 +104,7 @@ class Product {
    * Throws NotFoundError if sku not found.
    **/
 
-  static async remove(sku) {
+  static async remove(sku, username) {
     const result = await db.query(`
         DELETE
         FROM inventory

@@ -129,4 +129,19 @@ router.patch("/:sku", ensureLoggedIn, async function (req, res, next) {
 })
 
 
+/** DELETE /[sku] => { deleted: SKU }
+ *
+ * Authorization: ensureLoggedIn
+ */
+
+router.delete("/:sku", ensureLoggedIn, async function (req, res, next) {
+  const username = res.locals.username;
+  const sku = req.params.sku.toUpperCase();
+
+  await Product.remove(sku, username);
+
+  return res.json({ deleted: sku });
+})
+
+
 module.exports = router;
