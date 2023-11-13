@@ -62,19 +62,19 @@ class Product {
  *
  * This is a "partial update" --- only change fields with provided data.
  *
- * Data can include { sku, productName, description, price, quantityAvailable }
+ * Data can include { productName, description, price, quantityAvailable }
  *
  * Returns { sku, productName, description, price, quantityAvailable }
  *
  * Throws NotFoundError if not found.
  */
 
-  static async update(sku, data) {
+  static async update(sku, data, username) {
     const { setCols, values } = sqlForPartialUpdate(
       data,
       {
-        numEmployees: "product_name",
-        quantityAvailable: "quantity_available",
+        productName: "product_name",
+        quantityAvailable: "quantity_available"
       });
 
     const handleVarIdx = "$" + (values.length + 1);
@@ -82,15 +82,15 @@ class Product {
     const querySql = `
           UPDATE inventory
           SET ${setCols}
-          WHERE sku = ${handleVarIdx}
+          WHERE sku = ${handleVarIdx} and username = $${values.length + 2}
           RETURNING
               sku,
-              product_name AS "productName:,
+              product_name AS "productName",
               description,
               price,
               quantity_available AS "quantityAvailable"`;
 
-    const result = await db.query(querySql, [...values, sku]);
+    const result = await db.query(querySql, [...values, sku, username]);
     const product = result.rows[0];
 
     if (!product) throw new NotFoundError(`No SKU: ${sku}`);

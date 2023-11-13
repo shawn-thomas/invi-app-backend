@@ -11,6 +11,7 @@ const { ensureLoggedIn } = require("../middleware/auth");
 
 const productNewSchema = require("../schemas/productNew.json")
 const productSearchSchema = require("../schemas/productSearch.json")
+const productUpdateSchema = require("../schemas/productUpdate.json")
 
 const router = new express.Router();
 
@@ -26,8 +27,8 @@ const router = new express.Router();
  */
 
 router.post("/", ensureLoggedIn, async function (req, res, next) {
-
   const username = res.locals.username;
+
   const validator = jsonschema.validate(
     req.body,
     productNewSchema,
@@ -37,6 +38,9 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
     const errs = validator.errors.map(e => e.stack);
     throw new BadRequestError(errs);
   }
+
+  const capitalizedSku = req.body['sku'].toUpperCase();
+  req.body.sku = capitalizedSku;
 
   const product = await Product.create({ ...req.body, username });
   return res.status(201).json({ product });
@@ -77,7 +81,6 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
   }
 });
 
-
 /** GET /[sku] => { product }
  *
  *  Product is { sku, productName, description, price, quantityAvailable}
@@ -86,10 +89,44 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
  */
 
 router.get("/:sku", ensureLoggedIn, async function (req, res, next) {
-  const username = res.locals.username;6
-  const product = await Product.get(req.params.sku, username);
+  const username = res.locals.username;
+  const sku = req.params.sku.toUpperCase();
+
+  const product = await Product.get(sku, username);
   return res.json({ product });
 });
+
+
+/** PATCH /[sku] { fld1, fld2, ... } => { product }
+ *
+ * Patches product data.
+ *
+ * fields can be: { productName, description, price, quantityAvailable}
+ *
+ * Returns { sku, productName, description, price, quantityAvailable}
+ *
+ * Authorization required: ensureLoggedIn
+ */
+
+router.patch("/:sku", ensureLoggedIn, async function (req, res, next) {
+  const username = res.locals.username;
+  const sku = req.params.sku.toUpperCase();
+
+  const validator = jsonschema.validate(
+    req.body,
+    productUpdateSchema,
+    {required: true}
+  );
+
+  if (!validator.valid) {
+    const errs = validator.errors.map(e => e.stack);
+    throw new BadRequestError(errs);
+  }
+
+  const product = await Product.update(sku, req.body, username);
+  return res.json({ product })
+
+})
 
 
 module.exports = router;
