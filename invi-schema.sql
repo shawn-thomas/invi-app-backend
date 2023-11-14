@@ -11,22 +11,25 @@ CREATE TABLE users (
 CREATE TABLE customers (
   customer_id SERIAL PRIMARY KEY,
   username VARCHAR(25) REFERENCES users(username) ON DELETE CASCADE,
-  customer_name VARCHAR(100) UNIQUE NOT NULL,
+  handle VARCHAR(100),
+  customer_name VARCHAR(100) NOT NULL,
   first_name VARCHAR(50),
   last_name VARCHAR(50),
-  email VARCHAR(100),
+  email VARCHAR(50),
   phone VARCHAR(20),
-  address TEXT
+  address TEXT,
+  CONSTRAINT unique_handle_per_user UNIQUE (username, handle)
 );
 
 CREATE TABLE invoices (
   invoice_id SERIAL PRIMARY KEY,
   username VARCHAR(25) REFERENCES users(username) ON DELETE CASCADE,
-  customer_id INT REFERENCES customers(customer_id) ON DELETE CASCADE,
+  customer_handle VARCHAR(100),
   invoice_date DATE,
   date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   total_amount DECIMAL(15, 2),
-  status VARCHAR(20)
+  status VARCHAR(20),
+  CONSTRAINT fk_invoice_customer FOREIGN KEY (username, customer_handle) REFERENCES customers(username, handle) ON DELETE CASCADE
 );
 
 CREATE TABLE inventory (
