@@ -11,6 +11,7 @@ const { NotFoundError } = require("./expressError");
 const { authenticateJWT } = require("./middleware/auth");
 const authRoutes = require("./routes/auth");
 const inventoryRoutes = require("./routes/inventory");
+const customerRoutes = require("./routes/customers")
 
 
 app.use(cors()); // Enable CORS for all routes
@@ -19,17 +20,7 @@ app.use(authenticateJWT);
 
 app.use("/auth", authRoutes);
 app.use("/inventory", inventoryRoutes);
-
-// Test Route
-// app.get('/test', async (req, res) => {
-//   try {
-//     const result = await db.query('SELECT NOW()');
-//     res.json(result.rows);
-//   } catch (error) {
-//     console.error("Database error:", error); // Log the error for debugging
-//     res.status(500).json({ error: "Internal server error" }); // Send a generic error message
-//   }
-// });
+app.use("/customer", customerRoutes);
 
 // Handle 404 errors
 app.use(function (req, res, next) {

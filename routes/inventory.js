@@ -46,6 +46,23 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
   return res.status(201).json({ product });
 });
 
+
+/** GET /[sku] => { product }
+ *
+ * Returns { sku, productName, description, price, quantityAvailable}
+ *
+ * Authorization required: ensureLoggedIn
+ */
+
+router.get("/:sku", ensureLoggedIn, async function (req, res, next) {
+  const username = res.locals.username;
+  const sku = req.params.sku.toUpperCase();
+
+  const product = await Product.get(sku, username);
+  return res.json({ product });
+});
+
+
 /** GET /  =>
  *  { inventory:
  *  [{ sku, username, productName, description, price, quantityAvailable,...]}
@@ -79,21 +96,6 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
   } catch (err) {
     return next(err);
   }
-});
-
-/** GET /[sku] => { product }
- *
- *  Product is { sku, productName, description, price, quantityAvailable}
- *
- * Authorization required: ensureLoggedIn
- */
-
-router.get("/:sku", ensureLoggedIn, async function (req, res, next) {
-  const username = res.locals.username;
-  const sku = req.params.sku.toUpperCase();
-
-  const product = await Product.get(sku, username);
-  return res.json({ product });
 });
 
 
