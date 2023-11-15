@@ -171,8 +171,9 @@ class Product {
     const result = await db.query(`
         DELETE
         FROM inventory
-        WHERE sku = $1
-        RETURNING sku`, [sku]);
+        WHERE username = $1 AND sku = $2
+        RETURNING sku`,
+    [username, sku]);
     const product = result.rows[0];
 
     if (!product) throw new NotFoundError(`No SKU: ${sku}`);
