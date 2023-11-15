@@ -89,4 +89,18 @@ router.patch("/:handle", ensureLoggedIn, async function (req, res, next) {
   return res.json({ customer });
 });
 
+
+/** DELETE /[handle] => { deleted: handle }
+ *
+ * Authorization: ensureLoggedIn
+ */
+
+router.delete("/:handle", ensureLoggedIn, async function (req, res, next) {
+  const username = res.locals.username;
+  const handle = req.params.handle.toLowerCase();
+
+  await Customer.remove(handle, username);
+
+  return res.json({ deleted: handle })
+})
 module.exports = router;

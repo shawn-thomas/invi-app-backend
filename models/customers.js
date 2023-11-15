@@ -174,7 +174,7 @@ class Customer {
     const result = await db.query(querySql, [...values, handle, username]);
     const customer = result.rows[0];
 
-    if (!customer) throw new NotFoundError(`No customers found for handle: ${handle}`);
+    if (!customer) throw new NotFoundError(`No customer found for handle: ${handle}`);
 
     // update handle
     customer['handle'] = createHandle(customer['customerName']);
@@ -182,6 +182,23 @@ class Customer {
     return customer;
   }
 
+  /** Delete given product from inventory; returns undefined.
+   *
+   * Throws NotFoundError if sku not found.
+   **/
+
+  static async remove(handle, username) {
+    const result = await db.query(`
+        DELETE
+        FROM customers
+        WHERE username = $1 AND handle = $2
+        RETURNING customer_name as "customerName"`,
+    [username, handle]);
+
+    const customer = result.rows[0];
+
+    if (!customer) throw new NotFoundError(`No customer found for handle: ${handle}`)
+  }
 
 
 }
