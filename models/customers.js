@@ -4,6 +4,7 @@ const db = require("../db");
 const { NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 const { createHandle } = require("../helpers/createHandle");
+const { cleanPhone } = require("../helpers/cleanPhone")
 
 /** Related functions for customers. */
 
@@ -24,6 +25,7 @@ class Customer {
     phone,
     address }) {
 
+    const phoneUnformatted = cleanPhone(phone);
     const handle = createHandle(customerName);
     const result = await db.query(`
         INSERT INTO customers (customer_name,
@@ -49,7 +51,7 @@ class Customer {
       firstName,
       lastName,
       email,
-      phone,
+      phoneUnformatted,
       address
     ]);
 
@@ -98,7 +100,7 @@ class Customer {
    */
 
   static async findAll(searchFilters = {}, username) {
-    const { customerNameLike, firstNameLike, lastNameLike } = searchFilters;
+    const { customerNameLike, firstNameLike, lastNameLike, phoneLike } = searchFilters;
     let vals = [];
 
     let whereParts = [];
@@ -116,6 +118,11 @@ class Customer {
     if (lastNameLike) {
       vals.push(`%${lastNameLike}%`);
       whereParts.push(`last_name ILIKE $${vals.length}`);
+    }
+
+    if (phoneLike) {
+      vals.push(`%${phoneLike}%`);
+      whereParts.push(`phone ILIKE $${vals.length}`);
     }
 
     vals.push(username);
