@@ -52,7 +52,6 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
  * - customerNameLike
  * - firstNameLike
  * - lastNameLike
- * - phoneLike
  *
  * Authorization required: ensureLoggedIn
  */
