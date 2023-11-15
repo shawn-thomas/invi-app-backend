@@ -91,6 +91,7 @@ class Customer {
    * - customerNameLike
    * - firstNameLike
    * - lastNameLike
+   * - phoneLike
    *
    * - customerNameLike (will find case-insensitive, partial matches)
    *
@@ -98,8 +99,8 @@ class Customer {
    */
 
   static async findAll(searchFilters = {}, username) {
-    const { customerNameLike, firstNameLike, lastNameLike } = searchFilters;
-    let vals = []; // Initialize vals here
+    const { customerNameLike, firstNameLike, lastNameLike, phoneLike } = searchFilters;
+    let vals = [];
 
     let whereParts = [];
 
@@ -116,6 +117,11 @@ class Customer {
     if (lastNameLike) {
       vals.push(`%${nameLike}%`);
       whereParts.push(`last_name ILIKE $${vals.length}`);
+    }
+
+    if (phoneLike) {
+      vals.push(`%${nameLike}%`);
+      whereParts.push(`phone ILIKE $${vals.length}`);
     }
 
     vals.push(username);
@@ -136,6 +142,7 @@ class Customer {
     return customersRes.rows;
   }
 
+  
   /** Update customer data with `data`.
    *
    * This is a "partial update" --- only change fields with provided data.

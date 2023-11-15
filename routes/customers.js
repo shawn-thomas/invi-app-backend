@@ -10,6 +10,7 @@ const Customer = require("../models/customers");
 const { ensureLoggedIn } = require("../middleware/auth");
 
 const customerNewSchema = require("../schemas/customerNew.json");
+const customerSearchSchema = require("../schemas/customerSearch.json");
 const customerUpdateSchema = require("../schemas/customerUpdate.json");
 
 const router = new express.Router();
@@ -40,6 +41,43 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 
   const customer = await Customer.create({ ...req.body, username });
   return res.status(201).json({ customer });
+});
+
+
+/** GET /  =>
+ *  { customers:
+ *  [{ customerName, firstName, lastName, email, phone, address,...]}
+ *
+ * Can filter on provided search filters:
+ * - customerNameLike
+ * - firstNameLike
+ * - lastNameLike
+ * - phoneLike
+ *
+ * Authorization required: ensureLoggedIn
+ */
+
+router.get("/", ensureLoggedIn, async function (req, res, next) {
+  try {
+    const username = res.locals.username;
+    const q = req.query;
+
+    const validator = jsonschema.validate(
+      q,
+      customerSearchSchema,
+      { required: true }
+    );
+    if (!validator.valid) {
+      const errs = validator.errors.map(e => e.stack);
+      throw new BadRequestError(errs);
+    }
+
+    const customers = await Customer.findAll(q, username);
+
+    return res.json({ customers });
+  } catch (err) {
+    return next(err);
+  }
 });
 
 
@@ -103,4 +141,5 @@ router.delete("/:handle", ensureLoggedIn, async function (req, res, next) {
 
   return res.json({ deleted: handle })
 })
+
 module.exports = router;
