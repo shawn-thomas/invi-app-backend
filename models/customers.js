@@ -140,41 +140,46 @@ class Customer {
    *
    * This is a "partial update" --- only change fields with provided data.
    *
-   * Data can include { firstName, lastName, email, phone, address }
+   * Data can include { customerName, firstName, lastName, email, phone, address }
    *
-   * Returns { customerName, firstName, lastName, email, phone, address }
+   * Returns { customerName, handle, firstName, lastName, email, phone, address }
    *
    * Throws NotFoundError if not found.
    */
 
-  static async update(customerName, data, username) {
+  static async update(handle, data, username) {
     const { setCols, values } = sqlForPartialUpdate(
       data,
       {
-        firstName: "firstName",
-        lastName: "lastName",
+        customerName: "customer_name",
+        firstName: "first_name",
+        lastName: "last_name",
       });
 
     const handleVarIdx = "$" + (values.length + 1);
 
     const querySql = `
-          UPDATE inventory
+          UPDATE customers
           SET ${setCols}
-          WHERE customerName = ${handleVarIdx} and username = $${values.length + 2}
+          WHERE handle = ${handleVarIdx} and username = $${values.length + 2}
           RETURNING
-                  customer_name as customerName,
-                  first_name as firstName,
-                  last_name as lastName,
+                  customer_name as "customerName",
+                  handle,
+                  first_name as "firstName",
+                  last_name as "lastName",
                   email,
                   phone,
                   address`;
 
-    const result = await db.query(querySql, [...values, customerName, username]);
-    const product = result.rows[0];
+    const result = await db.query(querySql, [...values, handle, username]);
+    const customer = result.rows[0];
 
-    if (!product) throw new NotFoundError(`No customer: ${customerName}`);
+    if (!customer) throw new NotFoundError(`No customers found for handle: ${handle}`);
 
-    return product;
+    // update handle
+    customer['handle'] = createHandle(customer['customerName']);
+
+    return customer;
   }
 
 
