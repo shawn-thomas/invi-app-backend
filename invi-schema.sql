@@ -22,8 +22,9 @@ CREATE TABLE customers (
 );
 
 CREATE TABLE invoices (
-  invoice_id SERIAL PRIMARY KEY,
-  username VARCHAR(25) REFERENCES users(username) ON DELETE CASCADE,
+  invoice_id INT,
+  username VARCHAR(25),
+  PRIMARY KEY (invoice_id, username),
   customer_handle VARCHAR(100),
   invoice_date DATE,
   date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -43,9 +44,11 @@ CREATE TABLE inventory (
 );
 
 CREATE TABLE invoice_items (
-  invoice_item_id SERIAL PRIMARY KEY,
-  invoice_id INT REFERENCES invoices(invoice_id) ON DELETE CASCADE,
+  item_id SERIAL PRIMARY KEY,
+  invoice_id INT,
+  username VARCHAR(25),
   sku VARCHAR(25),
   quantity INT,
-  unit_price DECIMAL(15, 2) CHECK (unit_price >= 0)
+  unit_price DECIMAL(15, 2) CHECK (unit_price >= 0),
+  CONSTRAINT fk_invoice_items FOREIGN KEY (invoice_id, username) REFERENCES invoices(invoice_id, username) ON DELETE CASCADE
 );
