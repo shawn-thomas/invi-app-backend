@@ -12,6 +12,7 @@ const { authenticateJWT } = require("./middleware/auth");
 const authRoutes = require("./routes/auth");
 const inventoryRoutes = require("./routes/inventory");
 const customerRoutes = require("./routes/customers")
+const invoiceRoutes = require("./routes/invoices")
 
 
 app.use(cors()); // Enable CORS for all routes
@@ -21,6 +22,7 @@ app.use(authenticateJWT);
 app.use("/auth", authRoutes);
 app.use("/inventory", inventoryRoutes);
 app.use("/customer", customerRoutes);
+app.use("/invoice", invoiceRoutes);
 
 // Handle 404 errors
 app.use(function (req, res, next) {
