@@ -12,7 +12,7 @@ class Product {
    * data should be:
    * { sku, username, productName, description (opt), price(opt), quantityAvailable(opt) }
    *
-   * Throws NotFoundError if the sku does not exist.
+   * Throws BadRequestError if SKU already exists.
    *
    * Returns:
    * { sku, productName, description, price, quantityAvailable }
