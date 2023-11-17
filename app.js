@@ -10,6 +10,7 @@ const { NotFoundError } = require("./expressError");
 
 const { authenticateJWT } = require("./middleware/auth");
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/users");
 const inventoryRoutes = require("./routes/inventory");
 const customerRoutes = require("./routes/customers")
 const invoiceRoutes = require("./routes/invoices")
@@ -20,6 +21,7 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(authenticateJWT);
 
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 app.use("/inventory", inventoryRoutes);
 app.use("/customer", customerRoutes);
 app.use("/invoice", invoiceRoutes);
