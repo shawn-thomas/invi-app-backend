@@ -131,9 +131,9 @@ class Customer {
     const where = (whereParts.length > 0) ? "WHERE " + whereParts.join(" AND ") : "";
 
     const customersRes = await db.query(`
-        SELECT customer_name as customerName,
-               first_name as firstName,
-               last_name as lastName,
+        SELECT customer_name as "customerName",
+               first_name as "firstName",
+               last_name as "lastName",
                email,
                phone,
                address
