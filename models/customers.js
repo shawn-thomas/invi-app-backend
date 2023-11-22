@@ -189,9 +189,9 @@ class Customer {
     return customer;
   }
 
-  /** Delete given product from inventory; returns undefined.
+  /** Delete customer.
    *
-   * Throws NotFoundError if sku not found.
+   * Throws NotFoundError if customer not found.
    **/
 
   static async remove(handle, username) {
