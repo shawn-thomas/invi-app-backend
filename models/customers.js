@@ -132,6 +132,7 @@ class Customer {
 
     const customersRes = await db.query(`
         SELECT customer_name as "customerName",
+               handle,
                first_name as "firstName",
                last_name as "lastName",
                email,
