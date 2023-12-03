@@ -3,6 +3,9 @@
 
 This is the Express API for Invi. Combined with <a href="https://github.com/shawn-thomas/invi-app-frontend">invi-app-frontend</a> for the following app:
 
+### Built With
+* Node.js with Express
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
