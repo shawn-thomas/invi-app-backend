@@ -10,6 +10,7 @@ class Invoice {
   /** Create an invoice (from data), update db, return new invoice data.
    *
    * data should be { username,
+   *                  invoice_id,
    *                  customer_handle,
    *                  invoice_date,
    *                  total_amount,
@@ -26,20 +27,20 @@ class Invoice {
    *
    * */
 
-  static async create({ invoice_id,
+  static async create({ invoiceId,
                         username,
-                        customer_handle,
-                        invoice_date,
-                        total_amount,
+                        customerHandle,
+                        invoiceDate,
+                        totalAmount,
                         status,
                         items }) {
     const existingInvoice = await db.query(
       `SELECT invoice_id FROM invoices WHERE username = $1 AND invoice_id = $2`,
-      [username, invoice_id]
+      [username, invoiceId]
     );
 
     if (existingInvoice.rows.length > 0) {
-      throw new BadRequestError(`Invoice with ID ${invoice_id} already exists for user ${username}`);
+      throw new BadRequestError(`Invoice with ID ${invoiceId} already exists for user ${username}`);
     }
 
     const invoiceRes = await db.query(`
@@ -57,7 +58,7 @@ class Invoice {
         date_created AS "dateCreated",
         total_amount AS "totalAmount",
         status`,
-      [invoice_id, username, customer_handle, invoice_date, total_amount, status]);
+      [invoiceId, username, customerHandle, invoiceDate, totalAmount, status]);
 
     const invoice = invoiceRes.rows[0];
 
@@ -75,7 +76,7 @@ class Invoice {
             sku,
             quantity,
             unit_price AS "unitPrice"`,
-        [invoice.invoiceId, username, item.sku, item.quantity, item.unit_price]);
+        [invoice.invoiceId, username, item.sku, item.quantity, item.unitPrice]);
 
       return itemRes.rows[0];
     });
@@ -300,3 +301,4 @@ class Invoice {
 }
 
 module.exports = Invoice;
+8

@@ -3,19 +3,19 @@
     "$id": "http://our.company.com/invoiceNew.json",
     "type": "object",
     "properties": {
-      "invoice_id": {
+      "invoiceId": {
         "type": "integer"
       },
-      "customer_handle": {
+      "customerHandle": {
         "type": "string",
         "minLength": 1,
         "maxLength": 100
       },
-      "invoice_date": {
+      "invoiceDate": {
         "type": "string",
         "format": "date"
       },
-      "total_amount": {
+      "totalAmount": {
         "type": "number",
         "minimum": 0
       },
@@ -37,16 +37,16 @@
               "type": "integer",
               "minimum": 0
             },
-            "unit_price": {
+            "unitPrice": {
               "type": "number",
               "minimum": 0
             }
           },
-          "required": ["sku", "quantity", "unit_price"],
+          "required": ["sku", "quantity", "unitPrice"],
           "additionalProperties": false
         }
       }
     },
     "additionalProperties": false,
-    "required": ["invoice_id", "customer_handle", "invoice_date", "total_amount", "status", "items"]
+    "required": ["invoiceId", "customerHandle", "invoiceDate", "totalAmount", "status", "items"]
   }
