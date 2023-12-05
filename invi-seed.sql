@@ -18,11 +18,11 @@ VALUES
 
 INSERT INTO invoices (invoice_id, username, customer_handle, invoice_date, total_amount, status)
 VALUES
-  (101, 'user1', 'cust1', '2023-01-01', 150.00, 'Paid'),
-  (102, 'user2', 'cust2', '2023-01-02', 200.00, 'Pending'),
-  (103, 'user3', 'cust3', '2023-01-03', 100.00, 'Paid'),
-  (104, 'user4', 'cust4', '2023-01-04', 120.00, 'Pending'),
-  (105, 'user5', 'cust5', '2023-01-05', 180.00, 'Paid');
+  ('101', 'user1', 'cust1', '2023-01-01', 150.00, 'Paid'),
+  ('102', 'user2', 'cust2', '2023-01-02', 200.00, 'Pending'),
+  ('103', 'user3', 'cust3', '2023-01-03', 100.00, 'Paid'),
+  ('104', 'user4', 'cust4', '2023-01-04', 120.00, 'Pending'),
+  ('105', 'user5', 'cust5', '2023-01-05', 180.00, 'Paid');
 
 
 INSERT INTO inventory (sku, username, product_name, description, price, quantity_available)
@@ -36,8 +36,8 @@ VALUES
 
 INSERT INTO invoice_items (item_id, invoice_id, username, sku, quantity, unit_price)
 VALUES
-  (1, 101, 'user1', 'SKU001', 2, 50.00),
-  (2, 101, 'user1', 'SKU002', 3, 75.00),
-  (3, 102, 'user2', 'SKU001', 1, 50.00),
-  (4, 103, 'user3', 'SKU003', 5, 30.00),
-  (5, 104, 'user4', 'SKU004', 2, 40.00);
+  (1, '101', 'user1', 'SKU001', 2, 50.00),
+  (2, '101', 'user1', 'SKU002', 3, 75.00),
+  (3, '102', 'user2', 'SKU001', 1, 50.00),
+  (4, '103', 'user3', 'SKU003', 5, 30.00),
+  (5, '104', 'user4', 'SKU004', 2, 40.00);

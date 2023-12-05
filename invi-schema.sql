@@ -45,7 +45,7 @@ CREATE TABLE inventory (
 
 CREATE TABLE invoice_items (
   item_id SERIAL PRIMARY KEY,
-  invoice_id INT,
+  invoice_id VARCHAR(20),
   username VARCHAR(25),
   sku VARCHAR(25),
   quantity INT,
