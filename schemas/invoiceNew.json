@@ -4,7 +4,9 @@
     "type": "object",
     "properties": {
       "invoiceId": {
-        "type": "integer"
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 20
       },
       "customerHandle": {
         "type": "string",

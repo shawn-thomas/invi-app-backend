@@ -22,7 +22,7 @@ CREATE TABLE customers (
 );
 
 CREATE TABLE invoices (
-  invoice_id INT,
+  invoice_id VARCHAR(20),
   username VARCHAR(25),
   PRIMARY KEY (invoice_id, username),
   customer_handle VARCHAR(100),
