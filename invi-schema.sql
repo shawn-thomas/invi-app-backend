@@ -74,7 +74,7 @@ DECLARE
   item_quantity INT;
   previous_quantity INT;
 BEGIN
-  IF NEW.status = 'paid' THEN
+  IF NEW.status = 'Paid' THEN
     FOR item_row IN
       SELECT ii.sku, ii.quantity
       FROM invoice_items ii
@@ -116,8 +116,8 @@ CREATE OR REPLACE FUNCTION update_audit_inventory()
 RETURNS TRIGGER AS $$
 BEGIN
   IF NEW.quantity_available > OLD.quantity_available THEN
-    INSERT INTO audit (username, sku, previous_quantity_available, new_quantity_available, reason)
-    VALUES (NEW.username, NEW.sku, OLD.quantity_available, NEW.quantity_available, 'Restock');
+    INSERT INTO audit (record_id, username, sku, previous_quantity_available, new_quantity_available, reason)
+    VALUES ('Not Applicable', NEW.username, NEW.sku, OLD.quantity_available, NEW.quantity_available, 'Restock');
   END IF;
 
   RETURN NEW;
