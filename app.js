@@ -14,6 +14,7 @@ const userRoutes = require("./routes/users");
 const inventoryRoutes = require("./routes/inventory");
 const customerRoutes = require("./routes/customers")
 const invoiceRoutes = require("./routes/invoices")
+const auditRoutes = require("./routes/audit")
 
 
 app.use(cors()); // Enable CORS for all routes
@@ -25,6 +26,7 @@ app.use("/users", userRoutes);
 app.use("/inventory", inventoryRoutes);
 app.use("/customer", customerRoutes);
 app.use("/invoice", invoiceRoutes);
+app.use("/audit", auditRoutes);
 
 // Handle 404 errors
 app.use(function (req, res, next) {
