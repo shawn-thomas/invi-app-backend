@@ -45,10 +45,10 @@ VALUES
   ('RX006', 'demo', 'Xtreme Suspension', 'For off-road adventures.', 199.99, 20);
 
 
-INSERT INTO invoice_items (item_id, invoice_id, username, sku, quantity, unit_price)
+INSERT INTO invoice_items (invoice_id, username, sku, quantity, unit_price)
 VALUES
-  (1, '101', 'user1', 'SKU001', 2, 50.00),
-  (2, '101', 'user1', 'SKU002', 3, 75.00),
-  (3, '102', 'user2', 'SKU001', 1, 50.00),
-  (4, '103', 'user3', 'SKU003', 5, 30.00),
-  (5, '104', 'user4', 'SKU004', 2, 40.00);
+  ('101', 'user1', 'SKU001', 2, 50.00),
+  ('101', 'user1', 'SKU002', 3, 75.00),
+  ('102', 'user2', 'SKU001', 1, 50.00),
+  ('103', 'user3', 'SKU003', 5, 30.00),
+  ('104', 'user4', 'SKU004', 2, 40.00);
