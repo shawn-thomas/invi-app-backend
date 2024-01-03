@@ -196,7 +196,7 @@ class Invoice {
           invoice_items ON invoices.invoice_id = invoice_items.invoice_id AND
           invoices.username = invoice_items.username
       ${where}
-      ORDER BY invoices.invoice_id`, vals);
+      ORDER BY date_created DESC`, vals);
 
     const invoices = [];
 
@@ -301,4 +301,3 @@ class Invoice {
 }
 
 module.exports = Invoice;
-8

@@ -1,54 +1,61 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://our.company.com/invoiceNew.json",
-    "type": "object",
-    "properties": {
-      "invoiceId": {
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 20
-      },
-      "customerHandle": {
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 100
-      },
-      "invoiceDate": {
-        "type": "string",
-        "format": "date"
-      },
-      "totalAmount": {
-        "type": "number",
-        "minimum": 0
-      },
-      "status": {
-        "type": "string",
-        "enum": ["pending", "paid"]
-      },
-      "items": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "sku": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 25
-            },
-            "quantity": {
-              "type": "integer",
-              "minimum": 0
-            },
-            "unitPrice": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          "required": ["sku", "quantity", "unitPrice"],
-          "additionalProperties": false
-        }
-      }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://our.company.com/invoiceNew.json",
+  "type": "object",
+  "properties": {
+    "invoiceId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20
     },
-    "additionalProperties": false,
-    "required": ["invoiceId", "customerHandle", "invoiceDate", "totalAmount", "status", "items"]
-  }
+    "customerHandle": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "invoiceDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "totalAmount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": ["Pending", "Paid"]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 25
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unitPrice": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["sku", "quantity", "unitPrice"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "invoiceId",
+    "customerHandle",
+    "invoiceDate",
+    "totalAmount",
+    "status",
+    "items"
+  ]
+}

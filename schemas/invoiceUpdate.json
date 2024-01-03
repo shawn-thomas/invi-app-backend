@@ -18,7 +18,7 @@
       },
       "status": {
         "type": "string",
-        "enum": ["pending", "paid"]
+        "enum": ["Pending", "Paid"]
       },
       "item_sku": {
         "type": "string",
