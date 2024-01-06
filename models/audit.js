@@ -16,8 +16,9 @@ class Audit {
         change_date as "changeDate",
         reason
     FROM audit
-    WHERE username = $1`,
-    [username]);
+    WHERE username = $1
+    ORDER BY change_date DESC`,
+      [username]);
 
     return auditRes.rows;
   }
